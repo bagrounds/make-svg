@@ -11,7 +11,37 @@
 
   /* exports */
   module.exports = {
-    circle: circle
+    circle: circle,
+    rect: rect
+  }
+
+  /**
+   * Make an svg rectangle.
+   *
+   * @function rect
+   *
+   * @param {Object} options all function parameters
+   * @param {String} [options.id] id attribute for this svg element
+   * @param {Number} options.x coordinate of rectangle
+   * @param {Number} options.y coordinate of rectangle
+   * @param {Number} options.width of rectangle
+   * @param {Number} options.height of rectangle
+   * @param {Number} [options.rx] x radius of rounded corners
+   * @param {Number} [options.ry] y radius of rounded corners
+   *
+   * @return {String} svg rectangle element as a string
+   */
+  function rect (options) {
+    var svgOptions = {
+      tag: 'rect',
+      attributes: {}
+    }
+
+    Object.keys(options).forEach(function (key) {
+      svgOptions.attributes[key] = options[key]
+    })
+
+    return svg(svgOptions)
   }
 
   /**
@@ -21,8 +51,8 @@
    *
    * @param {Object} options all function parameters
    * @param {String} [options.id] id attribute for this svg element
-   * @param {Number} options.x x position for center of circle
-   * @param {Number} options.y y position for center of circle
+   * @param {Number} options.cx coordinate for center of circle
+   * @param {Number} options.cy coordinate for center of circle
    * @param {Number} options.r radius of circle
    *
    * @return {String} svg circle element as a string
@@ -33,13 +63,9 @@
       attributes: {}
     }
 
-    svgOptions.attributes.cx = options.x
-    svgOptions.attributes.cy = options.y
-    svgOptions.attributes.r = options.r
-
-    if (options.id) {
-      svgOptions.attributes.id = options.id
-    }
+    Object.keys(options).forEach(function (key) {
+      svgOptions.attributes[key] = options[key]
+    })
 
     return svg(svgOptions)
   }
