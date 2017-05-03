@@ -23,6 +23,7 @@
     "eslint": "^3.9.1"
   },
   "dependencies": {
+    "fun-object": "^0.5.3",
     "xml": "^1.0.1"
   }
 }

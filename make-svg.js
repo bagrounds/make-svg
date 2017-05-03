@@ -8,17 +8,20 @@
 
   /* imports */
   var xml = require('xml')
+  var object = require('fun-object')
 
   /* exports */
   module.exports = {
     circle: circle,
-    rect: rect
+    rect: rect,
+    line: line,
+    svg: svg
   }
 
   /**
    * Make an svg rectangle.
    *
-   * @function rect
+   * @function module:make-svg.rect
    *
    * @param {Object} options all function parameters
    * @param {String} [options.id] id attribute for this svg element
@@ -32,22 +35,13 @@
    * @return {String} svg rectangle element as a string
    */
   function rect (options) {
-    var svgOptions = {
-      tag: 'rect',
-      attributes: {}
-    }
-
-    Object.keys(options).forEach(function (key) {
-      svgOptions.attributes[key] = options[key]
-    })
-
-    return svg(svgOptions)
+    return svg('rect', options)
   }
 
   /**
    * Make an svg circle.
    *
-   * @function circle
+   * @function module:make-svg.circle
    *
    * @param {Object} options all function parameters
    * @param {String} [options.id] id attribute for this svg element
@@ -58,46 +52,45 @@
    * @return {String} svg circle element as a string
    */
   function circle (options) {
-    var svgOptions = {
-      tag: 'circle',
-      attributes: {}
-    }
+    return svg('circle', options)
+  }
 
-    Object.keys(options).forEach(function (key) {
-      svgOptions.attributes[key] = options[key]
-    })
-
-    return svg(svgOptions)
+  /**
+   * Make an svg line.
+   *
+   * @function module:make-svg.line
+   *
+   * @param {Object} options - all function parameters
+   * @param {String} [options.id] - id attribute for this svg element
+   * @param {Number} options.x1 - x coordinate of line start
+   * @param {Number} options.x2 - x coordinate of line end
+   * @param {Number} options.y1 - y coordinate of line start
+   * @param {Number} options.y2 - y coordinate of line end
+   *
+   * @return {String} svg line element as a string
+   */
+  function line (options) {
+    return svg('line', options)
   }
 
   /**
    * Make an svg element.
    *
-   * @function svg
+   * @function module:make-svg.svg
    *
-   * @param {Object} options all function parameters
-   * @param {String} options.tag svg element type
-   * @param {Object} options.attributes for the svg element
+   * @param {String} tag svg element type
+   * @param {Object} attributes for the svg element
    *
    * @return {String} svg as a string
    */
-  function svg (options) {
-    var attributes = options.attributes
-    var tag = options.tag
-
-    var xmlObject = {
-      svg: []
-    }
-
-    var element = {}
-
-    element[tag] = {}
-
-    element[tag]._attr = attributes
-
-    xmlObject.svg.push(element)
-
-    return xml(xmlObject)
+  function svg (tag, attributes) {
+    return xml({
+      svg: [
+        object.of(tag, {
+          _attr: attributes
+        })
+      ]
+    })
   }
 })()
 
