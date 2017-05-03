@@ -2,9 +2,21 @@
   "name": "make-svg",
   "version": "0.3.0",
   "description": "Make svg",
-  "main": "make-svg.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "npm run lint",
+    "test": "tap -Rtap --coverage-report=text-summary ./test/index.js",
+    "coverage": "tap --coverage-report=lcov ./test/index.js",
+    "predependencies": "mkdir -p img",
+    "dependencies": "madge . --image img/dependencies.svg -x 'public|test|coverage|docs' --include-npm",
+    "postdependencies": "npm run dependencies-test",
+    "dependencies-test": "madge . --image img/dependencies-test.svg -x 'public|coverage|docs' --include-npm",
+    "pages-index": "showdown makehtml -i README.md -o public/index.html",
+    "pages": "./script/pages.sh",
+    "lint": "eslint --ignore-path .gitignore --fix .",
+    "predocument": "rm -rf docs",
+    "document": "jsdoc -c .jsdoc.json",
+    "readme": "cat readme/* > README.md"
   },
   "repository": {
     "type": "git",
@@ -20,7 +32,17 @@
   },
   "homepage": "https://gitlab.com/bagrounds/make-svg#README",
   "devDependencies": {
-    "eslint": "^3.9.1"
+    "docdash": "^0.4.0",
+    "eslint": "^3.19.0",
+    "fun-arrange": "^0.1.0",
+    "fun-array": "^0.5.0",
+    "fun-object": "^0.5.3",
+    "fun-predicate": "^0.15.2",
+    "fun-test": "^0.21.1",
+    "fun-test-runner": "^0.8.0",
+    "jsdoc": "^3.4.3",
+    "madge": "^1.6.0",
+    "tap": "^10.3.2"
   },
   "dependencies": {
     "fun-object": "^0.5.3",
