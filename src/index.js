@@ -10,6 +10,11 @@
   var xml = require('xml')
   var object = require('fun-object')
 
+  var SVG_BASE_ATTRIBUTES = {
+    version: '1.1',
+    baseProfile: 'full'
+  }
+
   /* exports */
   module.exports = {
     circle: circle,
@@ -23,19 +28,19 @@
    *
    * @function module:make-svg.rect
    *
-   * @param {Object} options all function parameters
-   * @param {String} [options.id] id attribute for this svg element
-   * @param {Number} options.x coordinate of rectangle
-   * @param {Number} options.y coordinate of rectangle
-   * @param {Number} options.width of rectangle
-   * @param {Number} options.height of rectangle
-   * @param {Number} [options.rx] x radius of rounded corners
-   * @param {Number} [options.ry] y radius of rounded corners
+   * @param {Object} attributes - for rect element
+   * @param {String} [attributes.id] - id attribute for this svg element
+   * @param {Number} attributes.x - coordinate of rectangle
+   * @param {Number} attributes.y - coordinate of rectangle
+   * @param {Number} attributes.width - of rectangle
+   * @param {Number} attributes.height - of rectangle
+   * @param {Number} [attributes.rx] - x radius of rounded corners
+   * @param {Number} [attributes.ry] - y radius of rounded corners
    *
-   * @return {String} svg rectangle element as a string
+   * @return {Object} representing this svg element
    */
-  function rect (options) {
-    return svg('rect', options)
+  function rect (attributes) {
+    return object.of('rect', { _attr: attributes })
   }
 
   /**
@@ -43,16 +48,16 @@
    *
    * @function module:make-svg.circle
    *
-   * @param {Object} options all function parameters
-   * @param {String} [options.id] id attribute for this svg element
-   * @param {Number} options.cx coordinate for center of circle
-   * @param {Number} options.cy coordinate for center of circle
-   * @param {Number} options.r radius of circle
+   * @param {Object} attributes - for circle element
+   * @param {String} [attributes.id] - id attribute for this svg element
+   * @param {Number} attributes.cx - coordinate for center of circle
+   * @param {Number} attributes.cy - coordinate for center of circle
+   * @param {Number} attributes.r - radius of circle
    *
-   * @return {String} svg circle element as a string
+   * @return {Object} representing this svg element
    */
-  function circle (options) {
-    return svg('circle', options)
+  function circle (attributes) {
+    return object.of('circle', { _attr: attributes })
   }
 
   /**
@@ -60,17 +65,17 @@
    *
    * @function module:make-svg.line
    *
-   * @param {Object} options - all function parameters
-   * @param {String} [options.id] - id attribute for this svg element
-   * @param {Number} options.x1 - x coordinate of line start
-   * @param {Number} options.x2 - x coordinate of line end
-   * @param {Number} options.y1 - y coordinate of line start
-   * @param {Number} options.y2 - y coordinate of line end
+   * @param {Object} attributes - for line element
+   * @param {String} [attributes.id] - id attribute for this svg element
+   * @param {Number} attributes.x1 - x coordinate of line start
+   * @param {Number} attributes.x2 - x coordinate of line end
+   * @param {Number} attributes.y1 - y coordinate of line start
+   * @param {Number} attributes.y2 - y coordinate of line end
    *
-   * @return {String} svg line element as a string
+   * @return {Object} representing this svg element
    */
-  function line (options) {
-    return svg('line', options)
+  function line (attributes) {
+    return object.of('line', { _attr: attributes })
   }
 
   /**
@@ -78,18 +83,18 @@
    *
    * @function module:make-svg.svg
    *
-   * @param {String} tag svg element type
-   * @param {Object} attributes for the svg element
+   * @param {Object} attributes - for the svg element
+   * @param {Object} attributes.width - of the svg element
+   * @param {Object} attributes.height - of the svg element
+   * @param {Array<Object>} children - objects representing svg elements
    *
    * @return {String} svg as a string
    */
-  function svg (tag, attributes) {
+  function svg (attributes, children) {
     return xml({
       svg: [
-        object.of(tag, {
-          _attr: attributes
-        })
-      ]
+        { _attr: object.defaults(SVG_BASE_ATTRIBUTES, attributes) }
+      ].concat(children)
     })
   }
 })()
